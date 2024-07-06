@@ -15,7 +15,6 @@ jobs:
     - name: Configure
       run: |
         make defconfig
-        make kvm_guest.config
     - name: Build
       run: |
         make -j`nproc`
