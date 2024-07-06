@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  kernel:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
@@ -21,4 +21,21 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: bzImage
         path: arch/x86_64/boot/bzImage
+  busybox:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - run: sudo apt-get update && sudo apt-get -y build-dep busybox
+    - run: git clone https://git.busybox.net/busybox
+    - run: |
+      cd busybox
+      make defconfig
+      echo 'CONFIG_EXTRA_CFLAGS="-static"' >> .config
+      make
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: busybox
+        path: busybox/busybox
