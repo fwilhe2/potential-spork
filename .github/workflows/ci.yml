@@ -30,11 +30,8 @@ jobs:
     - run: sudo apt-get update && sudo apt-get -y install autoconf automake autopoint autotools-dev binutils binutils-common binutils-x86-64-linux-gnu bsdextrautils build-essential bzip2 cpp cpp-13 cpp-13-x86-64-linux-gnu cpp-x86-64-linux-gnu debhelper debugedit dh-autoreconf dh-strip-nondeterminism dpkg-dev dwz file g++ g++-13 g++-13-x86-64-linux-gnu g++-x86-64-linux-gnu gcc gcc-13 gcc-13-base gcc-13-x86-64-linux-gnu gcc-x86-64-linux-gnu gettext gettext-base groff-base intltool-debian lto-disabled-list m4 make man-db patch perl perl-modules-5.38 po-debconf rpcsvc-proto xz-utils zip
     - run: git clone --depth=1 https://git.busybox.net/busybox
     - run: |
+        cp busybox-config ./busybox/.config
         cd busybox
-        make defconfig
-        echo 'CONFIG_EXTRA_CFLAGS="-static"' >> .config
-        sed -i '/CONFIG_TC=n/CONFIG_TC=n/g' .config
-        make oldconfig
         make
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
