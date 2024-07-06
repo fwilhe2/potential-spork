@@ -33,6 +33,7 @@ jobs:
         cd busybox
         make defconfig
         echo 'CONFIG_EXTRA_CFLAGS="-static"' >> .config
+        sed -i '/CONFIG_TC=y/d' .config
         make
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
