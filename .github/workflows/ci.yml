@@ -57,6 +57,7 @@ jobs:
           install -d -m 1777 tmp
           mkdir -p usr/{include,lib,share,src}
           cp ../busybox/busybox usr/bin/busybox
+          chmod +x usr/bin/busybox
           for util in $(./usr/bin/busybox --list-full); do
             ln -s /usr/bin/busybox $util
           done
