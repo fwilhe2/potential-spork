@@ -43,10 +43,11 @@ jobs:
     needs: [kernel, busybox]
     steps:
     - uses: actions/checkout@v4
+    - run: wget https://git.busybox.net/busybox/plain/examples/inittab
     - uses: actions/download-artifact@v4
     - run: |
-          mkdir ~/rootfs
-          pushd ~/rootfs
+          mkdir rootfs
+          pushd rootfs
           mkdir -p usr/{sbin,bin} bin sbin boot
           mkdir -p {dev,etc,home,lib}
           mkdir -p {mnt,opt,proc,srv,sys}
@@ -58,7 +59,7 @@ jobs:
           for util in $(./usr/bin/busybox --list-full); do
             ln -s /usr/bin/busybox $util
           done
-          cp ~/busybox/examples/inittab etc/inittab
+          cp ../inittab etc/inittab
           mkdir -p etc/init.d proc sys dev
           echo 'proc    /proc   proc    defaults' >> etc/fstab
           echo 'sysfs   /sys    sysfs   defaults' >> etc/fstab
