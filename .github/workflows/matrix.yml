@@ -1,0 +1,39 @@
+name: CI
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  kernel:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "6.10"
+          - "6.9.10"
+          - "6.6.41"
+          - "6.1.100"
+          - "5.15.163"
+          - "5.10.222"
+          - "5.4.280"
+          - "4.19.318"
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: gregkh/linux
+        fetch-depth: 1
+        ref: ${{ matrix.version }}
+    - run: sudo apt-get update && sudo apt-get -y install apt-utils bc lz4 binutils bison build-essential ca-certificates cscope debhelper dwarves flex gcc git libelf-dev libncurses-dev libssl-dev linux-source make openssl pahole perl-base pkg-config python3-debian python-is-python3 rsync vim
+    - name: Configure
+      run: |
+        make defconfig
+        make kvm_guest.config
+    - name: Build
+      run: |
+        make -j`nproc`
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: bzImage-${{ matrix.version }}
+        path: arch/x86_64/boot/bzImage
