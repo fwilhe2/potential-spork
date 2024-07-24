@@ -6,7 +6,7 @@
 from urllib.request import urlopen
 import json
 
-pre = '''name: CI
+pre = '''name: Kernel Matrix
 on:
   push:
   workflow_dispatch:
@@ -25,7 +25,7 @@ post = '''    steps:
       with:
         repository: gregkh/linux
         fetch-depth: 1
-        ref: ${{ matrix.version }}
+        ref: v${{ matrix.version }}
     - run: sudo apt-get update && sudo apt-get -y install apt-utils bc lz4 binutils bison build-essential ca-certificates cscope debhelper dwarves flex gcc git libelf-dev libncurses-dev libssl-dev linux-source make openssl pahole perl-base pkg-config python3-debian python-is-python3 rsync vim
     - name: Configure
       run: |
