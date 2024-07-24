@@ -1,0 +1,20 @@
+name: Toybox
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  toybox:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - run: sudo apt-get update && sudo apt-get -y install autoconf automake autopoint autotools-dev binutils binutils-common binutils-x86-64-linux-gnu bsdextrautils build-essential bzip2 cpp cpp-13 cpp-13-x86-64-linux-gnu cpp-x86-64-linux-gnu debhelper debugedit dh-autoreconf dh-strip-nondeterminism dpkg-dev dwz file g++ g++-13 g++-13-x86-64-linux-gnu g++-x86-64-linux-gnu gcc gcc-13 gcc-13-base gcc-13-x86-64-linux-gnu gcc-x86-64-linux-gnu gettext gettext-base groff-base intltool-debian lto-disabled-list m4 make man-db patch perl perl-modules-5.38 po-debconf rpcsvc-proto xz-utils zip
+    - run: git clone --depth=1 https://github.com/landley/toybox
+    - run: |
+        cd toybox
+        make defconfig toybox
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: toybox
+        path: toybox/toybox
