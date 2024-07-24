@@ -12,7 +12,7 @@ jobs:
     - run: git clone --depth=1 https://github.com/landley/toybox
     - run: |
         cd toybox
-        make defconfig toybox
+        LDFLAGS=--static make defconfig toybox
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
