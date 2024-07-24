@@ -45,9 +45,10 @@ kernel_versions = ''
 with urlopen('https://www.kernel.org/releases.json') as response:
     releases = json.loads(response.read().decode())['releases']
     for r in releases:
-        if 'next' not in r['version']:
-            print(f'          - "{r['version']}"')
-            kernel_versions = kernel_versions + f'          - "{r['version']}"\n'
+        version = r['version']
+        if 'next' not in version:
+            print(f'          - "{version}"')
+            kernel_versions = kernel_versions + f'          - "{version}"\n'
 
 workflow = pre + kernel_versions + post
 
