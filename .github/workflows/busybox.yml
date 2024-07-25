@@ -56,5 +56,5 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: rootfs-disk-image
+        name: rootfs-busybox-disk-image
         path: rootfs.ext4
