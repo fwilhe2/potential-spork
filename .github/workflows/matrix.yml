@@ -42,4 +42,4 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: bzImage-${{ matrix.kernel.version }}
-        path: linux-${{ matrix.kernel.source }}/arch/x86_64/boot/bzImage
+        path: linux-${{ matrix.kernel.version }}/arch/x86_64/boot/bzImage
