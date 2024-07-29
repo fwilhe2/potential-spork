@@ -9,32 +9,37 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version:
-          - "6.10"
-          - "6.10.2"
-          - "6.9.12"
-          - "6.6.43"
-          - "6.1.102"
-          - "5.15.164"
-          - "5.10.223"
-          - "5.4.281"
-          - "4.19.319"
+        kernel:
+          - version: "6.11-rc1"
+            source: "https://git.kernel.org/torvalds/t/linux-6.11-rc1.tar.gz"
+          - version: "6.10.2"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.2.tar.xz"
+          - version: "6.9.12"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.12.tar.xz"
+          - version: "6.6.43"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.43.tar.xz"
+          - version: "6.1.102"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.102.tar.xz"
+          - version: "5.15.164"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.164.tar.xz"
+          - version: "5.10.223"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.223.tar.xz"
+          - version: "5.4.281"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.281.tar.xz"
+          - version: "4.19.319"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.319.tar.xz"
     steps:
     - uses: actions/checkout@v4
-      with:
-        repository: gregkh/linux
-        fetch-depth: 1
-        ref: v${{ matrix.version }}
+    - run: wget --quiet --output-document kernel.tar.xz ${{ matrix.kernel.source }} && tar xf kernel.tar.xz
     - run: sudo apt-get update && sudo apt-get -y install apt-utils bc lz4 binutils bison build-essential ca-certificates cscope debhelper dwarves flex gcc git libelf-dev libncurses-dev libssl-dev linux-source make openssl pahole perl-base pkg-config python3-debian python-is-python3 rsync vim
-    - name: Configure
+    - name: Build kernel
       run: |
+        cd linux-${{ matrix.kernel.version }}
         make defconfig
         make kvm_guest.config
-    - name: Build
-      run: |
         make -j`nproc`
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: bzImage-${{ matrix.version }}
-        path: arch/x86_64/boot/bzImage
+        name: bzImage-${{ matrix.kernel.version }}
+        path: linux-${{ matrix.kernel.version }}/arch/x86_64/boot/bzImage
