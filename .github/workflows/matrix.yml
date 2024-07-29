@@ -30,11 +30,11 @@ jobs:
             source: "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.319.tar.xz"
     steps:
     - uses: actions/checkout@v4
-    - run: wget --output-document kernel.tar.xz ${{ matrix.kernel.source }} && tar xf kernel.tar.xz
+    - run: wget --quiet --output-document kernel.tar.xz ${{ matrix.kernel.source }} && tar xf kernel.tar.xz
     - run: sudo apt-get update && sudo apt-get -y install apt-utils bc lz4 binutils bison build-essential ca-certificates cscope debhelper dwarves flex gcc git libelf-dev libncurses-dev libssl-dev linux-source make openssl pahole perl-base pkg-config python3-debian python-is-python3 rsync vim
     - name: Build kernel
       run: |
-        cd linux-${{ matrix.kernel.source }}
+        cd linux-${{ matrix.kernel.version }}
         make defconfig
         make kvm_guest.config
         make -j`nproc`
