@@ -41,3 +41,8 @@ jobs:
       with:
         name: bzImage-${{ matrix.kernel.version }}
         path: linux-${{ matrix.kernel.version }}/arch/x86_64/boot/bzImage
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: all-folder-linux-${{ matrix.kernel.version }}
+        path: linux-${{ matrix.kernel.version }}/
