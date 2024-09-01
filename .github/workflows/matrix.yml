@@ -35,17 +35,9 @@ jobs:
         cd linux-${{ matrix.kernel.version }}
         make defconfig
         make kvm_guest.config
-        make -j`nproc`
+        make tar-pkg -j`nproc`
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: bzImage-${{ matrix.kernel.version }}
-        path: linux-${{ matrix.kernel.version }}/arch/x86_64/boot/bzImage
-
-    - run: tar cf linux-${{ matrix.kernel.version }}.tar linux-${{ matrix.kernel.version }}
-
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        name: all-folder-linux-${{ matrix.kernel.version }}
-        path: linux-${{ matrix.kernel.version }}.tar
+        name: linux-${{ matrix.kernel.version }}
+        path: linux-${{ matrix.kernel.version }}/linux-${{ matrix.kernel.version }}-x86.tar
