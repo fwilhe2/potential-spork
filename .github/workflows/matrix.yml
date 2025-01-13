@@ -10,24 +10,20 @@ jobs:
       fail-fast: false
       matrix:
         kernel:
-          - version: "6.13-rc3"
-            source: "https://git.kernel.org/torvalds/t/linux-6.13-rc3.tar.gz"
-          - version: "6.12.6"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz"
-          - version: "6.11.11"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.11.11.tar.xz"
-          - version: "6.6.67"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.67.tar.xz"
-          - version: "6.1.121"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.121.tar.xz"
-          - version: "5.15.175"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.175.tar.xz"
-          - version: "5.10.232"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.232.tar.xz"
-          - version: "5.4.288"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.288.tar.xz"
-          - version: "4.19.325"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.325.tar.xz"
+          - version: "6.13-rc7"
+            source: "https://git.kernel.org/torvalds/t/linux-6.13-rc7.tar.gz"
+          - version: "6.12.9"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.9.tar.xz"
+          - version: "6.6.71"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.71.tar.xz"
+          - version: "6.1.124"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.124.tar.xz"
+          - version: "5.15.176"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.176.tar.xz"
+          - version: "5.10.233"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.233.tar.xz"
+          - version: "5.4.289"
+            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.289.tar.xz"
     steps:
     - uses: actions/checkout@v4
     - run: wget --quiet --output-document kernel.tar.xz ${{ matrix.kernel.source }} && tar xf kernel.tar.xz
