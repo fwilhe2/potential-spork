@@ -7,7 +7,7 @@ KERNEL_VERSION=$(echo $VERSION_SOURCE | cut -d ',' -f 1)
 KERNEL_SOURCE=$(echo $VERSION_SOURCE | cut -d ',' -f 2)
 
 if [ ! -f linux-"${KERNEL_VERSION}".tar.xz ]; then
-    wget $KERNEL_SOURCE
+    wget --quiet $KERNEL_SOURCE
 fi
 
 if [ ! -d linux-"${KERNEL_VERSION}" ]; then
