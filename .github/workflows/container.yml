@@ -1,0 +1,21 @@
+name: Toybox
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  rootfs:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - run: |
+          ./run-build-container.sh
+          sudo /sbin/mkfs.ext4 -L root -d ./rootfs/ rootfs.ext4 1G
+
+    - run: tar cf rootfs.tar rootfs
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: rootfs-toybox2-disk-image
+        path: rootfs.ext4
