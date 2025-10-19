@@ -16,6 +16,8 @@ fi
 podman build -t kernel-builder -f Containerfile.kernel .
 podman run --volume "$PWD"/linux-"${KERNEL_VERSION}":/usr/local/src kernel-builder /usr/local/bin/build-kernel.sh
 
+cp linux-"${KERNEL_VERSION}"/arch/x86/boot/bzImage bzImage
+
 if [ ! -d toybox ]; then
     git clone --depth=1 https://github.com/landley/toybox
 fi
