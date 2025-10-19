@@ -4,43 +4,53 @@ on:
   workflow_dispatch:
 
 jobs:
-  kernel:
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        kernel:
-          - version: "6.17"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.17.tar.xz"
-          - version: "6.17.1"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.17.1.tar.xz"
-          - version: "6.16.11"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.16.11.tar.xz"
-          - version: "6.12.51"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.51.tar.xz"
-          - version: "6.6.110"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.110.tar.xz"
-          - version: "6.1.155"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.155.tar.xz"
-          - version: "5.15.194"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.194.tar.xz"
-          - version: "5.10.245"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.245.tar.xz"
-          - version: "5.4.300"
-            source: "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.300.tar.xz"
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      kernel: ${{ steps.json.outputs.kernel }}
     steps:
-    - uses: actions/checkout@v4
-    - run: wget --quiet --output-document kernel.tar.xz ${{ matrix.kernel.source }} && tar xf kernel.tar.xz
-    - run: sudo apt-get update && sudo apt-get -y install apt-utils bc lz4 binutils bison build-essential ca-certificates cscope debhelper dwarves flex gcc git libelf-dev libncurses-dev libssl-dev linux-source make openssl pahole perl-base pkg-config python3-debian python-is-python3 rsync vim
-    - name: Build kernel
-      run: |
-        cd linux-${{ matrix.kernel.version }}
-        make defconfig
-        make kvm_guest.config
-        echo 'CONFIG_EFI_STUB=y' >> .config
-        make -j`nproc`
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        name: bzImage-${{ matrix.kernel.version }}
-        path: linux-${{ matrix.kernel.version }}/arch/x86_64/boot/bzImage
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - uses: actions/github-script@v7
+        id: gen-matrix
+        with:
+          script: |
+            const response = await fetch('https://www.kernel.org/releases.json');
+            const data = await response.json();
+            let kernel_versions = [];
+            for (const r of data.releases) {
+              const version = r.version;
+              const source = r.source;
+              if (!version.includes('next')) {
+                console.log(version);
+                kernel_versions.push({"version": version, "source": source})
+              }
+            }
+            let json = JSON.stringify(kernel_versions);
+            console.log(json);
+            core.setOutput('kernel', json);
+
+  run-matrix:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repository: ${{ fromJson(needs.prepare.outputs.kernel) }}
+      fail-fast: false
+      max-parallel: 15
+    steps:
+      - run: wget --quiet --output-document kernel.tar.xz ${{ matrix.kernel.source }} && tar xf kernel.tar.xz
+      - run: sudo apt-get update && sudo apt-get -y install apt-utils bc lz4 binutils bison build-essential ca-certificates cscope debhelper dwarves flex gcc git libelf-dev libncurses-dev libssl-dev linux-source make openssl pahole perl-base pkg-config python3-debian python-is-python3 rsync vim
+      - name: Build kernel
+        run: |
+          cd linux-${{ matrix.kernel.version }}
+          make defconfig
+          make kvm_guest.config
+          echo 'CONFIG_EFI_STUB=y' >> .config
+          make -j`nproc`
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: bzImage-${{ matrix.kernel.version }}
+          path: linux-${{ matrix.kernel.version }}/arch/x86_64/boot/bzImage
