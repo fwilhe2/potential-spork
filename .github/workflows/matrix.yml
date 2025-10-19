@@ -18,13 +18,13 @@ jobs:
           script: |
             const response = await fetch('https://www.kernel.org/releases.json');
             const data = await response.json();
-            let kernel_versions = {"include": []};
+            let kernel_versions = [];
             for (const r of data.releases) {
               const version = r.version;
               const source = r.source;
               if (!version.includes('next')) {
                 console.log(version);
-                kernel_versions["include"].push({"version": version, "source": source})
+                kernel_versions.push({"version": version, "source": source})
               }
             }
             let json = JSON.stringify(kernel_versions);
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repository: ${{ fromJson(needs.prepare.outputs.kernel) }}
+        kernel: ${{ fromJson(needs.prepare.outputs.kernel) }}
       fail-fast: false
       max-parallel: 15
     steps:
