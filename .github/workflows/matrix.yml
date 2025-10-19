@@ -7,7 +7,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      kernel: ${{ steps.json.outputs.kernel }}
+      kernel: ${{ steps.gen-matrix.outputs.kernel }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
