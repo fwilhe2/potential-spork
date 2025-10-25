@@ -3,9 +3,8 @@
 set -o errexit
 set -x
 
-VERSION_SOURCE=$(python3 get-kernel-url-by-version.py 6.12)
-KERNEL_VERSION=$(echo $VERSION_SOURCE | cut -d ',' -f 1)
-KERNEL_SOURCE=$(echo $VERSION_SOURCE | cut -d ',' -f 2)
+KERNEL_VERSION=$(python3 get-kernel-url-by-version.py 6.12 version)
+KERNEL_SOURCE=$(python3 get-kernel-url-by-version.py 6.12 source)
 
 if [ ! -f linux-"${KERNEL_VERSION}".tar.xz ]; then
     wget --quiet $KERNEL_SOURCE
