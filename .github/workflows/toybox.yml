@@ -49,7 +49,7 @@ jobs:
           chmod +x etc/init.d/rcS
 
           popd
-          sudo /sbin/mkfs.ext4 -L root -d ./rootfs/ rootfs.ext4 1G
+          sudo /sbin/mkfs.ext4 -L root -d ./rootfs/ out/rootfs.ext4 1G
 
     - run: mkdir out
 
