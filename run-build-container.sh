@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o errexit
+set -x
 
 VERSION_SOURCE=$(python3 get-kernel-url-by-version.py 6.12)
 KERNEL_VERSION=$(echo $VERSION_SOURCE | cut -d ',' -f 1)
