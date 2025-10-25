@@ -16,6 +16,7 @@ jobs:
         make defconfig
         echo CONFIG_SH=y >> .config
         echo CONFIG_INIT=y >> .config
+        echo CONFIG_GETTY=y >> .config
         make toybox
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
