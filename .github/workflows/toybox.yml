@@ -49,13 +49,10 @@ jobs:
           chmod +x etc/init.d/rcS
 
           popd
+          mkdir out
           sudo /sbin/mkfs.ext4 -L root -d ./rootfs/ out/rootfs.ext4 1G
-
-    - run: mkdir out
-
-    - run: tar cf out/rootfs.tar rootfs
-
-    - run: find rootfs | cpio --create --verbose -H newc > out/rootfs.cpio
+          tar cf out/rootfs.tar rootfs
+          find rootfs | cpio --create --verbose -H newc > out/rootfs.cpio
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
