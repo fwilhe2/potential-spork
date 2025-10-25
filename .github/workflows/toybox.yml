@@ -45,6 +45,9 @@ jobs:
             ln -s /usr/bin/toybox $util
           done
 
+          cp -r ../etc .
+          chmod +x etc/init.d/rcS
+
           popd
           sudo /sbin/mkfs.ext4 -L root -d ./rootfs/ rootfs.ext4 1G
 
