@@ -48,8 +48,16 @@ jobs:
 
     - run: tar cf rootfs.tar rootfs
 
+    - run: find rootfs | cpio --create --verbose > rootfs.cpio
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
         name: rootfs-toybox-disk-image
         path: rootfs.ext4
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: rootfs-toybox-cpio-disk-image
+        path: rootfs.cpio
