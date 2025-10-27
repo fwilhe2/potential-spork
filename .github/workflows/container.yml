@@ -5,14 +5,18 @@ on:
 
 jobs:
   rootfs:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: ["", "-arm"] #amd64 and arm
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
+    - run: dpkg --print-architecture
     - run: |
           ./run-build-container.sh
-
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: rootfs-initrd-kernel
+        name: rootfs-initrd-kernel${{ matrix.runner }}
         path: output/
