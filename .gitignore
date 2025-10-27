@@ -2,3 +2,7 @@ linux-*
 toybox
 rootfs
 bzImage
+Image.gz
+rootfs.cpio
+rootfs.ext4
+output

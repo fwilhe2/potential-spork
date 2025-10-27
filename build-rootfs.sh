@@ -13,3 +13,10 @@ chmod +x usr/bin/toybox
 for util in $(./usr/bin/toybox --long); do
 ln -s /usr/bin/toybox $util
 done
+
+cp -r /root/etc .
+chmod +x etc/init.d/rcS
+
+/sbin/mkfs.ext4 -L root -d /usr/local/src /usr/local/output/rootfs.ext4 1G
+tar cf /usr/local/output/rootfs.tar /usr/local/src
+find /usr/local/src | cpio --create --verbose -H newc > /usr/local/output/rootfs.cpio
