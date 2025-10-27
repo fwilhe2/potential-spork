@@ -15,6 +15,7 @@ jobs:
     - run: dpkg --print-architecture
     - run: |
           ./run-build-container.sh
+          cp run-qemu${{ matrix.runner }}.sh output/
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.4
       with:

@@ -21,7 +21,7 @@ podman run --volume "$PWD"/linux-"${KERNEL_VERSION}":/usr/local/src kernel-build
 arch=$(uname -i)
 if [[ $arch == x86_64* ]]; then
     cp linux-"${KERNEL_VERSION}"/arch/x86/boot/bzImage output/bzImage
-elif  [[ $arch == arm* ]]; then
+elif  [[ $arch == aarch64* ]]; then
     cp linux-"${KERNEL_VERSION}"/arch/arm64/boot/Image.gz output/Image.gz
 fi
 
