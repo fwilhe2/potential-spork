@@ -2,6 +2,8 @@ FROM debian:sid
 
 RUN apt-get update && apt-get -y install apt-utils bc lz4 binutils bison build-essential ca-certificates cscope debhelper dwarves flex gcc git libelf-dev libncurses-dev libssl-dev linux-source make openssl pahole perl-base pkg-config python3-debian python-is-python3 rsync vim
 COPY build-kernel.sh /usr/local/bin/
-RUN chmod +X /usr/local/bin/build-kernel.sh
+RUN chmod +x /usr/local/bin/build-kernel.sh
+COPY build-kernel-uml.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/build-kernel-uml.sh
 
 WORKDIR /usr/local/src

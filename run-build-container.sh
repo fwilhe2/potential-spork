@@ -25,6 +25,8 @@ elif  [[ $arch == aarch64* ]]; then
     cp linux-"${KERNEL_VERSION}"/arch/arm64/boot/Image.gz output/Image.gz
 fi
 
+podman run --volume "$PWD"/linux-"${KERNEL_VERSION}":/usr/local/src kernel-builder /usr/local/bin/build-kernel-uml.sh
+
 cp linux-"${KERNEL_VERSION}"/linux output/linux
 
 if [ ! -d toybox ]; then
