@@ -21,13 +21,11 @@ podman run --volume "$PWD"/linux-"${KERNEL_VERSION}":/usr/local/src kernel-build
 arch=$(uname -i)
 if [[ $arch == x86_64* ]]; then
     cp linux-"${KERNEL_VERSION}"/arch/x86/boot/bzImage output/bzImage
+    podman run --volume "$PWD"/linux-"${KERNEL_VERSION}":/usr/local/src kernel-builder /usr/local/bin/build-kernel-uml.sh
+    cp linux-"${KERNEL_VERSION}"/linux output/linux
 elif  [[ $arch == aarch64* ]]; then
     cp linux-"${KERNEL_VERSION}"/arch/arm64/boot/Image.gz output/Image.gz
 fi
-
-podman run --volume "$PWD"/linux-"${KERNEL_VERSION}":/usr/local/src kernel-builder /usr/local/bin/build-kernel-uml.sh
-
-cp linux-"${KERNEL_VERSION}"/linux output/linux
 
 if [ ! -d toybox ]; then
     git clone --depth=1 https://github.com/landley/toybox
