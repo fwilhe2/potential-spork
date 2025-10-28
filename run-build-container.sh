@@ -25,6 +25,8 @@ elif  [[ $arch == aarch64* ]]; then
     cp linux-"${KERNEL_VERSION}"/arch/arm64/boot/Image.gz output/Image.gz
 fi
 
+cp linux-"${KERNEL_VERSION}"/linux output/linux
+
 if [ ! -d toybox ]; then
     git clone --depth=1 https://github.com/landley/toybox
 fi
