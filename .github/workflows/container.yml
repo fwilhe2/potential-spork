@@ -12,6 +12,8 @@ jobs:
         runner: ["", "-arm"] #amd64 and arm
     steps:
     - uses: actions/checkout@v7
+    - name: Collect Workflow Telemetry
+      uses: fwilhe2/workflow-telemetry-action@v3
     - run: dpkg --print-architecture
     - run: |
           ./run-build-container.sh

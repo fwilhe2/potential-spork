@@ -40,6 +40,8 @@ jobs:
       fail-fast: false
       max-parallel: 15
     steps:
+      - name: Collect Workflow Telemetry
+        uses: fwilhe2/workflow-telemetry-action@v3
       - run: wget --quiet --output-document kernel.tar.xz ${{ matrix.kernel.source }} && tar xf kernel.tar.xz
       - run: sudo apt-get update && sudo apt-get -y install apt-utils bc lz4 binutils bison build-essential ca-certificates cscope debhelper dwarves flex gcc git libelf-dev libncurses-dev libssl-dev linux-source make openssl pahole perl-base pkg-config python3-debian python-is-python3 rsync vim
       - name: Build kernel
