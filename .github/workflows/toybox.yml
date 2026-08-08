@@ -34,6 +34,9 @@ jobs:
     - name: Collect Workflow Telemetry
       uses: fwilhe2/workflow-telemetry-action@v3
     - uses: actions/download-artifact@v8
+      with:
+        name: toybox
+        path: toybox
     - run: |
           mkdir rootfs
           pushd rootfs
