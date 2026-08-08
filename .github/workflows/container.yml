@@ -11,13 +11,13 @@ jobs:
       matrix:
         runner: ["", "-arm"] #amd64 and arm
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - run: dpkg --print-architecture
     - run: |
           ./run-build-container.sh
           cp run-qemu${{ matrix.runner }}.sh output/
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.3.4
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: rootfs-initrd-kernel${{ matrix.runner }}
         path: output/
