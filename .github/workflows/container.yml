@@ -17,7 +17,7 @@ jobs:
           ./run-build-container.sh
           cp run-qemu${{ matrix.runner }}.sh output/
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.3.4
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: rootfs-initrd-kernel${{ matrix.runner }}
         path: output/

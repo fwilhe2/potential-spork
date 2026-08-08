@@ -48,7 +48,7 @@ jobs:
           make defconfig ARCH=um
           make -j`nproc` ARCH=um
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.3.4
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: bzImage-${{ matrix.kernel.version }}
           path: linux-${{ matrix.kernel.version }}/linux
