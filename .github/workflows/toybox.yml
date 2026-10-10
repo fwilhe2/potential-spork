@@ -22,7 +22,7 @@ jobs:
         echo CONFIG_VI=y >> .config
         make toybox
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v7.0.1
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: toybox
         path: toybox/toybox
@@ -63,7 +63,7 @@ jobs:
           find rootfs | cpio --create --verbose -H newc > out/rootfs.cpio
 
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v7.0.1
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: rootfs-toybox-disk-image
         path: out/

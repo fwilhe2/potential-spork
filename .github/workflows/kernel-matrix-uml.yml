@@ -50,7 +50,7 @@ jobs:
           make defconfig ARCH=um
           make -j`nproc` ARCH=um
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: bzImage-${{ matrix.kernel.version }}
           path: linux-${{ matrix.kernel.version }}/linux
